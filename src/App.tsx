@@ -56,6 +56,27 @@ export default function App() {
   const [purchaseNotification, setPurchaseNotification] = useState<string | null>(null);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const [checkoutUrl, setCheckoutUrl] = useState("https://pay.hotmart.com/K106843927J?off=dbzlvckf&checkoutMode=10");
+  const testimonialTitleRef = useRef<HTMLHeadingElement>(null);
+  const testimonialProbeRef = useRef<HTMLSpanElement>(null);
+  const [isTestimonialTitleWrapped, setIsTestimonialTitleWrapped] = useState(false);
+
+  useEffect(() => {
+    const checkTitleWrap = () => {
+      if (testimonialTitleRef.current && testimonialProbeRef.current) {
+        const containerWidth = testimonialTitleRef.current.parentElement?.clientWidth || window.innerWidth;
+        const textWidth = testimonialProbeRef.current.offsetWidth;
+        const totalSingleLineWidth = textWidth + 48; // icon (~36px) + gap (~12px)
+        setIsTestimonialTitleWrapped(containerWidth < totalSingleLineWidth);
+      }
+    };
+
+    checkTitleWrap();
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(checkTitleWrap);
+    }
+    window.addEventListener('resize', checkTitleWrap);
+    return () => window.removeEventListener('resize', checkTitleWrap);
+  }, []);
 
   useEffect(() => {
     const checkoutBaseUrl = "https://pay.hotmart.com/K106843927J?off=dbzlvckf&checkoutMode=10";
@@ -555,9 +576,23 @@ export default function App() {
 
         {/* Depoimentos Recentes */}
         <section className="mb-14">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center text-[#2c2c2c] flex justify-center items-center gap-3">
+          <span 
+            ref={testimonialProbeRef} 
+            aria-hidden="true" 
+            className="invisible fixed -left-[9999px] top-0 whitespace-nowrap text-3xl md:text-4xl font-bold font-sans pointer-events-none select-none"
+          >
+            Experiencias de nuestra comunidad
+          </span>
+          <h2 
+            ref={testimonialTitleRef}
+            className={`text-3xl md:text-4xl font-bold mb-6 text-center text-[#2c2c2c] flex ${
+              isTestimonialTitleWrapped 
+                ? 'flex-col items-center gap-1.5' 
+                : 'flex-row justify-center items-center gap-3'
+            }`}
+          >
              <span className="animate-pulse inline-block">💙</span>
-             Experiencias de nuestra comunidad
+             <span className="leading-tight">Experiencias de nuestra comunidad</span>
           </h2>
           <div className="relative mb-12 w-full max-w-4xl mx-auto">
              <div 
@@ -671,6 +706,66 @@ export default function App() {
             </a>
           </div>
         </section>
+
+        {/* About the Creator Section */}
+        <section className="mb-14 max-w-2xl mx-auto">
+          <div className="bg-[#F4EDE3] p-6 md:p-8 rounded-3xl border-4 border-[#2c2c2c] shadow-[6px_6px_0px_0px_#2c2c2c] text-center -rotate-0.5">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-[#2c2c2c] flex items-center justify-center gap-2">
+              <span className="text-2xl md:text-3xl inline-block animate-wiggle">🎨</span>
+              <span>¿Quién creó el Manual?</span>
+            </h2>
+
+            {/* Round photo with rotating dashed border */}
+            <div className="relative w-52 h-52 md:w-64 md:h-64 mx-auto mb-6 flex items-center justify-center rounded-full shadow-[6px_6px_0px_0px_#A505F1] bg-white">
+              {/* Constantly spinning dashed border */}
+              <div className="absolute inset-0 rounded-full border-4 border-[#2c2c2c] border-dashed animate-spin-slow pointer-events-none z-10" />
+
+              {/* Upright Photo */}
+              <div className="relative w-full h-full rounded-full overflow-hidden p-2 z-0">
+                <img 
+                  src="/images/junior.webp" 
+                  alt="Junior Launther" 
+                  width={256} 
+                  height={256} 
+                  loading="lazy" 
+                  decoding="async" 
+                  className="w-full h-full object-cover rounded-full select-none" 
+                />
+              </div>
+            </div>
+
+            <div className="space-y-4 text-lg md:text-xl text-[#2c2c2c] leading-relaxed max-w-xl mx-auto">
+              <p>
+                ¡Hola! Soy Junior Launther, artista y creador de <a href="https://www.instagram.com/ateliedoju" target="_blank" rel="noopener noreferrer" className="font-bold text-[#A505F1] hover:underline">@ateliedoju</a>. Comparto mis creaciones e ideas para despertar la creatividad, ¡incluso en quienes creen que no saben dibujar!
+              </p>
+              <p>
+                Llevo 17 años en internet y también creo contenido para A Casa do Ju, que reúne a más de 350 mil seguidores en las redes sociales. Este Manual nació de mi deseo de hacer que dibujar sea más sencillo, accesible y divertido.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Comprar Ahora with Floating 63% OFF Badge */}
+        <div className="flex justify-center mb-14 px-2">
+          <div className="relative w-full max-w-sm">
+            <a 
+              href={checkoutUrl} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="w-full bg-[#A505F1] hover:bg-[#8204BE] text-white text-xl md:text-2xl font-bold py-3 md:py-4 px-4 md:px-8 rounded-2xl border-4 border-[#2c2c2c] shadow-[4px_4px_0px_0px_#2c2c2c] hover:translate-y-1 hover:translate-x-1 hover:shadow-[2px_2px_0px_0px_#2c2c2c] transition-all flex items-center justify-center gap-2 animate-shine"
+            >
+              <ShoppingCart className="w-6 h-6 shrink-0 animate-wiggle" />
+              <span className="text-center leading-tight whitespace-nowrap">COMPRAR AHORA</span>
+            </a>
+
+            {/* 63% OFF Floating Badge - Outside button on top-right */}
+            <div className="absolute -top-3.5 -right-3 md:-top-4 md:-right-3.5 z-20 pointer-events-none">
+              <span className="inline-flex items-center justify-center bg-[#EF4444] text-white text-xs md:text-sm font-black px-2.5 py-1 rounded-full border-2 border-[#2c2c2c] shadow-[3px_3px_0px_0px_#2c2c2c] animate-badge-pulse uppercase tracking-wider whitespace-nowrap">
+                63% OFF
+              </span>
+            </div>
+          </div>
+        </div>
 
       </main>
 
