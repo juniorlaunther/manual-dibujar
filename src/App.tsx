@@ -32,10 +32,10 @@ const faqs = [
 
 
 const productImages = [
-  "/images/imagem-01.webp",
-  "/images/imagem-02.webp",
-  "/images/imagem-03.webp",
-  "/images/imagem-04.webp",
+  "/images/anunio-01.webp",
+  "/images/anunio-02.webp",
+  "/images/anunio-03.webp",
+  "/images/anunio-04.webp",
 ];
 
 const testimonialImages = [
@@ -364,7 +364,7 @@ export default function App() {
           src="/images/logo.webp" 
           alt="Manual Para Dibujar" 
           width={400}
-          height={215}
+          height={224}
           decoding="async"
           className="max-h-28 md:max-h-40 w-auto object-contain drop-shadow-md animate-scale-soft"
         />
@@ -684,7 +684,7 @@ export default function App() {
             loading="lazy"
             decoding="async"
             width={400}
-            height={215}
+            height={224}
             className="h-16 md:h-20 w-auto object-contain drop-shadow-sm opacity-80 hover:opacity-100 transition-opacity"
           />
         </div>
