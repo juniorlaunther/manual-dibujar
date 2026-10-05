@@ -55,7 +55,7 @@ export default function App() {
   const [direction, setDirection] = useState(0);
   const [purchaseNotification, setPurchaseNotification] = useState<string | null>(null);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
-  const [checkoutUrl, setCheckoutUrl] = useState("https://pay.hotmart.com/K106843927J?off=dbzlvckf&checkoutMode=10");
+  const [checkoutUrl, setCheckoutUrl] = useState("https://pay.hotmart.com/I107884207I?off=uk1skm65&checkoutMode=10");
   const testimonialTitleRef = useRef<HTMLHeadingElement>(null);
   const testimonialProbeRef = useRef<HTMLSpanElement>(null);
   const [isTestimonialTitleWrapped, setIsTestimonialTitleWrapped] = useState(false);
@@ -79,7 +79,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const checkoutBaseUrl = "https://pay.hotmart.com/K106843927J?off=dbzlvckf&checkoutMode=10";
+    const checkoutBaseUrl = "https://pay.hotmart.com/I107884207I?off=uk1skm65&checkoutMode=10";
     const allowedParams = [
       "utm_source",
       "utm_medium",
